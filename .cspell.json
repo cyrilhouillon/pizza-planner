@@ -1,27 +1,35 @@
 {
   "version": "0.1",
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
-  "language": "en",
+  "language": "fr",
   "words": [
-    "bitjson",
     "bitauth",
+    "bitjson",
+    "Chrono",
     "cimg",
     "circleci",
     "codecov",
     "commitlint",
+    "creneau",
+    "creneaux",
     "dependabot",
     "editorconfig",
     "esnext",
     "execa",
     "exponentiate",
+    "gestion",
     "globby",
+    "heure",
+    "initialiser",
+    "joda",
     "libauth",
     "mkdir",
     "prettierignore",
     "sandboxed",
     "transpiled",
     "typedoc",
-    "untracked"
+    "untracked",
+    "planner"
   ],
   "flagWords": [],
   "ignorePaths": [
@@ -30,5 +38,10 @@
     "yarn.lock",
     "tsconfig.json",
     "node_modules/**"
+  ],
+  "import": [
+    "@cspell/dict-fr-fr/cspell-ext.json",
+    "@cspell/dict-en_us/cspell-ext.json",
+    "@cspell/dict-typescript/cspell-ext.json"
   ]
 }
