@@ -8,6 +8,7 @@ const DefaultConfiguration: Configuration = {
   heureFin: LocalTime.of(22, 0),
   creneauEnMinutes: 10,
   timeZone: ZoneId.of('Europe/Paris'),
+  nbPizzasParCreneau: 7,
 };
 
 export default DefaultConfiguration;

@@ -5,4 +5,5 @@ export type Configuration = {
   readonly heureFin?: LocalTime;
   readonly creneauEnMinutes: number;
   readonly timeZone: ZoneId;
+  readonly nbPizzasParCreneau: number;
 };

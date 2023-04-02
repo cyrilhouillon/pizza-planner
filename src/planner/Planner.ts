@@ -31,7 +31,7 @@ export class PizzaPlanner implements Planner {
   }
 
   placesLibresPour(creneau: string): number {
-    if (creneau) return 4;
+    if (creneau) return this.conf.nbPizzasParCreneau;
     return 0;
   }
 
