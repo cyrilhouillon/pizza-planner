@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 import { Clock, LocalTime } from '@js-joda/core';
 
-import { Creneau } from './Creneau';
+import { Creneau, precedent } from './Creneau';
 import { Commande, Pizza, Planner } from './PlannerApi';
 import { Configuration } from './conf/Configuration';
 import DefaultConfiguration from './conf/DefaultConfiguration';
@@ -33,16 +33,12 @@ export class PizzaPlanner implements Planner {
   }
 
   placesLibresPour(creneau: string): number {
-    const commandesPourCeCreneau = this.commandes.get(creneau);
-    if (commandesPourCeCreneau) {
-      return (
-        this.conf.nbPizzasParCreneau -
-        commandesPourCeCreneau
-          .map((c) => c.pizzas.length)
-          .reduce((sum, current) => sum + current, 0)
-      );
-    }
-    return this.conf.nbPizzasParCreneau;
+    return (
+      this.conf.nbPizzasParCreneau -
+      this.pizzasPrevuesPour(creneau) +
+      (this.conf.nbPizzasParCreneau -
+        this.pizzasPrevuesPour(precedent(creneau)))
+    );
   }
 
   prochainCreneau(): ReadonlyArray<Pizza> {
@@ -65,5 +61,19 @@ export class PizzaPlanner implements Planner {
       this.commandes.set(commande.creneau, [commande]);
     }
     return true;
+  }
+
+  private pizzasPrevuesPour(creneau: string | null): number {
+    if (creneau) {
+      const commandesPourCeCreneau = this.commandes.get(creneau);
+      if (commandesPourCeCreneau) {
+        return commandesPourCeCreneau
+          .map((c) => c.pizzas.length)
+          .reduce((sum, current) => sum + current, 0);
+      } else {
+        return 0;
+      }
+    }
+    return this.conf.nbPizzasParCreneau;
   }
 }

@@ -29,13 +29,25 @@ test('si déjà 4 pizzas sont commandées, il ne reste plus que 3 places', (t) =
   t.is(t.context.planner.placesLibresPour('18:00'), 3);
 });
 
-test('si déjà 4 pizzas sont commandées pour 18h10, il ne reste plus que 3 places pour 18h10 mais 7 pour 18h00', (t) => {
+test('si déjà 4 pizzas sont commandées dans 2 commandes différentes, il ne reste plus que 3 places', (t) => {
+  t.context.planner.commander({
+    creneau: '18:00',
+    pizzas: [aPizza(), aPizza()],
+  });
+  t.context.planner.commander({
+    creneau: '18:00',
+    pizzas: [aPizza(), aPizza()],
+  });
+  t.is(t.context.planner.placesLibresPour('18:00'), 3);
+});
+
+test('si déjà 4 pizzas sont commandées pour 18h10 mais aucunes pour 18h00, il  plus que 3 + 7 = 10 places pour 18h10', (t) => {
   t.context.planner.commander({
     creneau: '18:10',
     pizzas: [aPizza(), aPizza(), aPizza(), aPizza()],
   });
   t.is(t.context.planner.placesLibresPour('18:00'), 7);
-  t.is(t.context.planner.placesLibresPour('18:10'), 3);
+  t.is(t.context.planner.placesLibresPour('18:10'), 10);
 });
 
 function aPizza(): Pizza {
