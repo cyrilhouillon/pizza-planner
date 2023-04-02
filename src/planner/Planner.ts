@@ -11,6 +11,8 @@ export class PizzaPlanner implements Planner {
   readonly clock: Clock;
   readonly conf: Configuration;
   readonly creneaux: ReadonlyMap<Creneau, ReadonlyArray<Pizza>>;
+  // eslint-disable-next-line functional/prefer-readonly-type
+  commandes: Map<string, Array<Commande>> = new Map();
 
   constructor(clock?: Clock, conf?: Configuration) {
     this.conf = conf || DefaultConfiguration;
@@ -31,8 +33,16 @@ export class PizzaPlanner implements Planner {
   }
 
   placesLibresPour(creneau: string): number {
-    if (creneau) return this.conf.nbPizzasParCreneau;
-    return 0;
+    const commandesPourCeCreneau = this.commandes.get(creneau);
+    if (commandesPourCeCreneau) {
+      return (
+        this.conf.nbPizzasParCreneau -
+        commandesPourCeCreneau
+          .map((c) => c.pizzas.length)
+          .reduce((sum, current) => sum + current, 0)
+      );
+    }
+    return this.conf.nbPizzasParCreneau;
   }
 
   prochainCreneau(): ReadonlyArray<Pizza> {
@@ -45,7 +55,15 @@ export class PizzaPlanner implements Planner {
   }
 
   commander(commande: Commande): boolean {
-    if (commande) return true;
-    return false;
+    const commandesPourCeCreneau = this.commandes.get(commande.creneau);
+    if (commandesPourCeCreneau) {
+      this.commandes.set(commande.creneau, [
+        ...commandesPourCeCreneau,
+        commande,
+      ]);
+    } else {
+      this.commandes.set(commande.creneau, [commande]);
+    }
+    return true;
   }
 }
