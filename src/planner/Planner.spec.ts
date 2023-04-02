@@ -1,10 +1,10 @@
 import { ChronoUnit, Clock, Instant, LocalTime, ZoneId } from '@js-joda/core';
 import test from 'ava';
 
-import { Planner } from './Planner';
+import { PizzaPlanner } from './Planner';
 
 test('first test', (t) => {
-  t.is(new Planner().planning, '');
+  t.is(new PizzaPlanner().planning, '');
 });
 
 test('get current time', (t) => {
@@ -12,7 +12,7 @@ test('get current time', (t) => {
     Instant.parse('2023-04-02T19:40:00.000Z'),
     ZoneId.UTC
   );
-  const planner = new Planner(clock);
+  const planner = new PizzaPlanner(clock);
   t.true(
     planner.currentTime
       .truncatedTo(ChronoUnit.MINUTES)
